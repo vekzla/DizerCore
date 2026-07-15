@@ -77,6 +77,40 @@ EnumCharacters::EnumCharacters(WorldPacket&& packet) : ClientPacket(std::move(pa
     ASSERT(GetOpcode() == CMSG_ENUM_CHARACTERS || GetOpcode() == CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT);
 }
 
+void SetupWarbandGroups::Read()
+{
+    uint32 groupCount = _worldPacket.ReadBits(5);
+    _worldPacket.FlushBits();
+
+    Groups.resize(groupCount);
+    for (uint32 i = 0; i < groupCount; ++i)
+    {
+        _worldPacket >> Groups[i].GroupID;
+        _worldPacket >> Groups[i].OrderIndex;
+        _worldPacket >> Groups[i].WarbandSceneID;
+        _worldPacket >> Groups[i].Flags;
+        _worldPacket >> Groups[i].ContentSetID;
+
+        uint32 memberCount;
+        _worldPacket >> memberCount;
+
+        Groups[i].Members.resize(memberCount);
+        for (uint32 j = 0; j < memberCount; ++j)
+        {
+            _worldPacket >> Groups[i].Members[j].WarbandScenePlacementID;
+            _worldPacket >> Groups[i].Members[j].Type;
+            _worldPacket >> Groups[i].Members[j].ContentSetID;
+
+            if (Groups[i].Members[j].Type == 0)
+                _worldPacket >> Groups[i].Members[j].Guid;
+        }
+
+        _worldPacket >> SizedString::BitsSize<9>(Groups[i].Name);
+        _worldPacket.FlushBits();
+        _worldPacket >> SizedString::Data(Groups[i].Name);
+    }
+}
+
 EnumCharactersResult::CharacterInfoBasic::CharacterInfoBasic(Field const* fields)
 {
     //         0                1                2                3                 4                  5

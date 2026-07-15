@@ -30,6 +30,7 @@
 #include "CharacterPackets.h"
 #include "Chat.h"
 #include "Common.h"
+#include "Configuration/Config.h"
 #include "DB2Stores.h"
 #include "DatabaseEnv.h"
 #include "EquipmentSetPackets.h"
@@ -57,10 +58,12 @@
 #include "QueryPackets.h"
 #include "RealmList.h"
 #include "ReputationMgr.h"
+#include "RBAC.h"
 #include "ScriptMgr.h"
 #include "SocialMgr.h"
 #include "StringConvert.h"
 #include "SystemPackets.h"
+#include "SpellAuraEffects.h"
 #include "TransmogMgr.h"
 #include "Util.h"
 #include "World.h"
@@ -487,7 +490,114 @@ void WorldSession::HandleCharEnum(CharacterDatabaseQueryHolder const& holder)
         charEnum.RaceUnlockData.push_back(raceUnlock);
     }
 
-    SendPacket(charEnum.Write());
+    LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_WARBAND_GROUPS);
+    stmt->setUInt32(0, GetAccountId());
+    stmt->setUInt32(1, sConfigMgr->GetIntDefault("RealmID", 1));
+
+    if (PreparedQueryResult groupsResult = LoginDatabase.Query(stmt))
+    {
+        do
+        {
+            Field* fields = groupsResult->Fetch();
+            WorldPackets::Character::WarbandGroup group;
+            group.GroupID = fields[0].GetUInt64();
+            group.OrderIndex = fields[1].GetUInt8();
+            group.Name = fields[2].GetString();
+            group.WarbandSceneID = fields[3].GetUInt32();
+            group.Flags = fields[4].GetUInt32();
+
+            charEnum.WarbandGroups.push_back(std::move(group));
+        } while (groupsResult->NextRow());
+
+        std::unordered_map<uint64, WorldPackets::Character::WarbandGroup*> groupMap;
+
+        for (auto& group : charEnum.WarbandGroups)
+            groupMap[group.GroupID] = &group;
+
+        stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_WARBAND_GROUP_MEMBERS);
+        stmt->setUInt32(0, GetAccountId());
+        stmt->setUInt32(1, sConfigMgr->GetIntDefault("RealmID", 1));
+
+        if (PreparedQueryResult membersResult = LoginDatabase.Query(stmt))
+        {
+            do
+            {
+                Field* fields = membersResult->Fetch();
+                uint64 groupId = fields[0].GetUInt64();
+
+                if (WorldPackets::Character::WarbandGroup* group = Trinity::Containers::MapGetValuePtr(groupMap, groupId))
+                {
+                    WorldPackets::Character::WarbandGroupMember member;
+                    member.Guid = ObjectGuid::Create<HighGuid::Player>(fields[1].GetUInt64());
+                    member.WarbandScenePlacementID = fields[2].GetUInt32();
+                    member.Type = fields[3].GetUInt32();
+                    group->Members.push_back(member);
+                }
+            } while (membersResult->NextRow());
+        }
+    }
+    else
+    {
+        uint64 nextGroupId = 1;
+        LoginDatabasePreparedStatement* maxIdStmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_WARBAND_GROUP_MAX_ID);
+
+        if (PreparedQueryResult maxIdResult = LoginDatabase.Query(maxIdStmt))
+        {
+            Field* fields = maxIdResult->Fetch();
+            nextGroupId = fields[0].GetUInt64() + 1;
+        }
+		 
+		auto const* globalStringEntry = sBroadcastTextStore.LookupEntry(51864);
+		std::string localizedGroupName = "Favorites"; // Default enUS name
+		if (globalStringEntry)
+		{
+			if (char const* text = globalStringEntry->Text[GetSessionDbcLocale()])
+				localizedGroupName = text;
+			else if (GetSessionDbcLocale() != LOCALE_enUS)
+			{
+				if (char const* text = globalStringEntry->Text[LOCALE_enUS])
+					localizedGroupName = text;
+			}
+		}
+		/*
+		auto const* globalStringEntry = sGlobalStringsStore.LookupEntry(51864);
+        std::string localizedGroupName = "Favorites"; // Default enUS name
+
+        if (globalStringEntry)
+        {
+            char const* textPtr = globalStringEntry->Text[GetSessionDbcLocale()];
+            if (textPtr)
+                localizedGroupName = textPtr;
+            else if (GetSessionDbcLocale() != LOCALE_enUS)
+            {
+                textPtr = globalStringEntry->Text[LOCALE_enUS];
+                if (textPtr)
+                    localizedGroupName = textPtr;
+            }
+        }
+		*/
+		
+        WorldPackets::Character::WarbandGroup defaultGroup;
+        defaultGroup.GroupID = nextGroupId;
+        defaultGroup.OrderIndex = 0;
+        defaultGroup.Name = localizedGroupName;
+        defaultGroup.WarbandSceneID = 1;
+        defaultGroup.Flags = 1;
+
+        charEnum.WarbandGroups.push_back(std::move(defaultGroup));
+
+        LoginDatabasePreparedStatement* insertStmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT_WARBAND_GROUP);
+        insertStmt->setUInt64(0, nextGroupId);
+        insertStmt->setUInt32(1, GetAccountId());
+        insertStmt->setUInt32(2, sConfigMgr->GetIntDefault("RealmID", 1));
+        insertStmt->setUInt8(3, 0);
+        insertStmt->setString(4, std::string(localizedGroupName));
+        insertStmt->setUInt32(5, 1);
+        insertStmt->setUInt32(6, 1);
+        LoginDatabase.Execute(insertStmt);
+    }
+    
+	SendPacket(charEnum.Write());
 
     if (!charEnum.IsDeletedCharacters)
         _collectionMgr->SendWarbandSceneCollectionData();
@@ -511,6 +621,45 @@ void WorldSession::HandleCharEnumOpcode(WorldPackets::Character::EnumCharacters&
     {
         HandleCharEnum(static_cast<EnumCharactersQueryHolder const&>(result));
     });
+}
+
+void WorldSession::HandleSetupWarbandGroups(WorldPackets::Character::SetupWarbandGroups& setupWarbandGroups)
+{
+    TC_LOG_DEBUG("network", "CMSG_SETUP_WARBAND_GROUPS: Received {} warband groups from account {}",
+        setupWarbandGroups.Groups.size(), GetAccountId());
+
+    uint32 accountId = GetAccountId();
+    uint32 realmId = sConfigMgr->GetIntDefault("RealmID", 1);
+    LoginDatabaseTransaction trans = LoginDatabase.BeginTransaction();
+    LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_ACCOUNT_WARBAND_GROUPS);
+    stmt->setUInt32(0, accountId);
+    stmt->setUInt32(1, realmId);
+    trans->Append(stmt);
+
+    for (auto const& group : setupWarbandGroups.Groups)
+    {
+        stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT_WARBAND_GROUP);
+        stmt->setUInt64(0, group.GroupID);
+        stmt->setUInt32(1, accountId);
+        stmt->setUInt32(2, realmId);
+        stmt->setUInt8(3, group.OrderIndex);
+        stmt->setString(4, std::string(group.Name));
+        stmt->setUInt32(5, group.WarbandSceneID);
+        stmt->setUInt32(6, group.Flags);
+        trans->Append(stmt);
+
+        for (auto const& member : group.Members)
+        {
+            stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT_WARBAND_GROUP_MEMBER);
+            stmt->setUInt64(0, group.GroupID);
+            stmt->setUInt64(1, member.Guid.GetCounter());
+            stmt->setUInt32(2, member.WarbandScenePlacementID);
+            stmt->setUInt32(3, member.Type);
+            trans->Append(stmt);
+        }
+    }
+
+    LoginDatabase.CommitTransaction(trans);
 }
 
 void WorldSession::HandleCharUndeleteEnumOpcode(WorldPackets::Character::EnumCharacters& /*enumCharacters*/)

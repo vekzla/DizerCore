@@ -132,10 +132,20 @@ namespace WorldPackets
             uint32 Flags = 0;    ///< enum WarbandGroupFlags { Collapsed = 1 }
             int32 ContentSetID = 0;
             std::vector<WarbandGroupMember> Members;
-            std::string_view Name;
+            std::string Name;
         };
 
-        class EnumCharactersResult final : public ServerPacket
+        class SetupWarbandGroups final : public ClientPacket
+        {
+        public:
+            explicit SetupWarbandGroups(WorldPacket&& packet) : ClientPacket(CMSG_SETUP_WARBAND_GROUPS, std::move(packet)) { }
+
+            void Read() override;
+
+            std::vector<WarbandGroup> Groups;
+        };
+       
+	    class EnumCharactersResult final : public ServerPacket
         {
         public:
             struct CharacterInfoBasic

@@ -275,8 +275,9 @@ namespace WorldPackets
         class SetWatchedFaction;
         class SetPlayerDeclinedNames;
         class SavePersonalEmblem;
-
-        enum class LoginFailureReason : uint8;
+		class SetupWarbandGroups;
+        
+		enum class LoginFailureReason : uint8;
     }
 
     namespace ClientConfig
@@ -1239,10 +1240,12 @@ class TC_GAME_API WorldSession
         void HandleCharEnum(CharacterDatabaseQueryHolder const& holder);
         void HandleCharEnumOpcode(WorldPackets::Character::EnumCharacters& /*enumCharacters*/);
         void HandleCharUndeleteEnumOpcode(WorldPackets::Character::EnumCharacters& /*enumCharacters*/);
-        void HandleCharDeleteOpcode(WorldPackets::Character::CharDelete& charDelete);
+        void HandleSetupWarbandGroups(WorldPackets::Character::SetupWarbandGroups& setupWarbandGroups);
+		void HandleCharDeleteOpcode(WorldPackets::Character::CharDelete& charDelete);
         void HandleCharCreateOpcode(WorldPackets::Character::CreateCharacter& charCreate);
         void HandlePlayerLoginOpcode(WorldPackets::Character::PlayerLogin& playerLogin);
-
+        /*void HandleCommentatorModeOpcode(WorldPackets::Chat::CommentatorModeEnable& packet);*/
+		
         void SendConnectToInstance(WorldPackets::Auth::ConnectToSerial serial);
         void HandleContinuePlayerLogin();
         void AbortLogin(WorldPackets::Character::LoginFailureReason reason);
