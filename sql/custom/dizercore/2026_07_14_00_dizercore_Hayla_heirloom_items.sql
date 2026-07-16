@@ -1,4 +1,10 @@
--- 1. Create the database schema if it doesn't exist (Optional safety)
+-- ============================================================
+-- Create the database schema if it doesn't exist
+-- Hayla updating items and creating tables within DizerCore DB
+-- V1.0 14.7.26
+-- DizerCore
+-- ============================================================
+
 CREATE SCHEMA IF NOT EXISTS `dizercore`;
 
 -- 2. Create the table
