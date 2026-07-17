@@ -1075,6 +1075,7 @@ struct CraftingQualityEntry
 //    uint32 CreatureID;
 //};
 
+// updated creatredisplayinfoentery to support db2 enteries for build 68453
 struct CreatureDisplayInfoEntry
 {
     uint32 ID;
@@ -1094,7 +1095,7 @@ struct CreatureDisplayInfoEntry
     int32 Flags;
     int32 StateSpellVisualKitID;
     float PlayerOverrideScale;
-    float PetInstanceScale;                                         // scale of not own player pets inside dungeons/raids/scenarios
+    float PetInstanceScale;											// scale of not own player pets inside dungeons/raids/scenarios
     int8 UnarmedWeaponType;
     int32 MountPoofSpellVisualKitID;
     int32 DissolveEffectID;
@@ -1102,8 +1103,8 @@ struct CreatureDisplayInfoEntry
     int32 DissolveOutEffectID;
     int8 CreatureModelMinLod;
     uint16 ConditionalCreatureModelID;
-    float Unknown_1100_1;
-    uint16 Unknown_1100_2;
+    float MountMaxBankingAngle;             						// Renamed from Unknown_1100_1
+    uint16 Field_11_0_0_54210_026;          						// Renamed from Unknown_1100_2
     std::array<int32, 4> TextureVariationFileDataID;
 };
 

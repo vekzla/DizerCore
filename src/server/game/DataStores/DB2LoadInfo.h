@@ -1456,6 +1456,7 @@ struct CraftingQualityLoadInfo
     static constexpr DB2LoadInfo Instance{ Fields, 3, &CraftingQualityMeta::Instance, HOTFIX_SEL_CRAFTING_QUALITY };
 };
 
+// new code based on updated creaturedisplayinfo.db2 file from build 68453
 struct CreatureDisplayInfoLoadInfo
 {
     static constexpr DB2FieldMeta Fields[31] =
@@ -1485,16 +1486,56 @@ struct CreatureDisplayInfoLoadInfo
         { .IsSigned = true, .Type = FT_INT, .Name = "DissolveOutEffectID" },
         { .IsSigned = true, .Type = FT_BYTE, .Name = "CreatureModelMinLod" },
         { .IsSigned = false, .Type = FT_SHORT, .Name = "ConditionalCreatureModelID" },
-        { .IsSigned = false, .Type = FT_FLOAT, .Name = "Unknown_1100_1" },
-        { .IsSigned = false, .Type = FT_SHORT, .Name = "Unknown_1100_2" },
-        { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID1" },
-        { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID2" },
-        { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID3" },
-        { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID4" },
+        { .IsSigned = false, .Type = FT_FLOAT, .Name = "MountMaxBankingAngle" }, // was: "Unknown_1100_1"
+        { .IsSigned = false, .Type = FT_SHORT, .Name = "Field_11_0_0_54210_026" }, // was: "Unknown_1100_2"
+        { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID0" }, // was: "TextureVariationFileDataID1"
+        { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID1" }, // was: "TextureVariationFileDataID2"
+        { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID2" }, // was: "TextureVariationFileDataID3"
+        { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID3" }, // was: "TextureVariationFileDataID4"
     };
-
     static constexpr DB2LoadInfo Instance{ Fields, 31, &CreatureDisplayInfoMeta::Instance, HOTFIX_SEL_CREATURE_DISPLAY_INFO };
 };
+
+// commented out for history based on above fix
+// struct CreatureDisplayInfoLoadInfo
+// {
+    // static constexpr DB2FieldMeta Fields[31] =
+    // {
+        // { .IsSigned = false, .Type = FT_INT, .Name = "ID" },
+        // { .IsSigned = false, .Type = FT_SHORT, .Name = "ModelID" },
+        // { .IsSigned = false, .Type = FT_SHORT, .Name = "SoundID" },
+        // { .IsSigned = true, .Type = FT_BYTE, .Name = "SizeClass" },
+        // { .IsSigned = false, .Type = FT_FLOAT, .Name = "CreatureModelScale" },
+        // { .IsSigned = false, .Type = FT_BYTE, .Name = "CreatureModelAlpha" },
+        // { .IsSigned = false, .Type = FT_BYTE, .Name = "BloodID" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "ExtendedDisplayInfoID" },
+        // { .IsSigned = false, .Type = FT_SHORT, .Name = "NPCSoundID" },
+        // { .IsSigned = false, .Type = FT_SHORT, .Name = "ParticleColorID" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "PortraitCreatureDisplayInfoID" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "PortraitTextureFileDataID" },
+        // { .IsSigned = false, .Type = FT_SHORT, .Name = "ObjectEffectPackageID" },
+        // { .IsSigned = false, .Type = FT_SHORT, .Name = "AnimReplacementSetID" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "Flags" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "StateSpellVisualKitID" },
+        // { .IsSigned = false, .Type = FT_FLOAT, .Name = "PlayerOverrideScale" },
+        // { .IsSigned = false, .Type = FT_FLOAT, .Name = "PetInstanceScale" },
+        // { .IsSigned = true, .Type = FT_BYTE, .Name = "UnarmedWeaponType" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "MountPoofSpellVisualKitID" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "DissolveEffectID" },
+        // { .IsSigned = true, .Type = FT_BYTE, .Name = "Gender" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "DissolveOutEffectID" },
+        // { .IsSigned = true, .Type = FT_BYTE, .Name = "CreatureModelMinLod" },
+        // { .IsSigned = false, .Type = FT_SHORT, .Name = "ConditionalCreatureModelID" },
+        // { .IsSigned = false, .Type = FT_FLOAT, .Name = "Unknown_1100_1" },
+        // { .IsSigned = false, .Type = FT_SHORT, .Name = "Unknown_1100_2" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID1" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID2" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID3" },
+        // { .IsSigned = true, .Type = FT_INT, .Name = "TextureVariationFileDataID4" },
+    // };
+
+    // static constexpr DB2LoadInfo Instance{ Fields, 31, &CreatureDisplayInfoMeta::Instance, HOTFIX_SEL_CREATURE_DISPLAY_INFO };
+// };
 
 struct CreatureDisplayInfoExtraLoadInfo
 {
