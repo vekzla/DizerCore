@@ -513,7 +513,8 @@ void HotfixDatabaseConnection::DoPrepareStatements()
 		"AnimReplacementSetID, Flags, StateSpellVisualKitID, PlayerOverrideScale, PetInstanceScale, UnarmedWeaponType, MountPoofSpellVisualKitID, "
 		"DissolveEffectID, Gender, DissolveOutEffectID, CreatureModelMinLod, ConditionalCreatureModelID, MountMaxBankingAngle, Field_11_0_0_54210_026, "
 		"TextureVariationFileDataID0, TextureVariationFileDataID1, TextureVariationFileDataID2, TextureVariationFileDataID3 FROM creature_display_info"
-		" WHERE ? = 1", CONNECTION_SYNCH); // <--- Added " WHERE ? = 1" at the end
+		" WHERE (`VerifiedBuild` > 0) = ?", CONNECTION_SYNCH);
+		// " WHERE ? = 1", CONNECTION_SYNCH); // <--- Added " WHERE ? = 1" at the end
 	PREPARE_MAX_ID_STMT(HOTFIX_SEL_CREATURE_DISPLAY_INFO, "SELECT MAX(ID) + 1 FROM creature_display_info", CONNECTION_SYNCH);
 
     // CreatureDisplayInfo.db2 attempting the above fix
