@@ -1,4 +1,6 @@
--- Run this in your SQL tool
+-- Starter kits providing new players with equipment
+-- dizercore
+-- V1.0 19.7.26
 CREATE TABLE IF NOT EXISTS `dizercore`.`starter_kit` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `item_id` INT(11) NOT NULL,
