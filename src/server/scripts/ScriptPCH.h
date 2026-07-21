@@ -34,7 +34,6 @@
 #include "SpellMgr.h"
 #include "SpellScript.h"
 #include "TemporarySummon.h"
-
 #include "Battleground.h"
 #include "Group.h"
 #include "MoveSplineInit.h"
