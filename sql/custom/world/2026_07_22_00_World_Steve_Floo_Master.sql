@@ -1,5 +1,5 @@
 -- SQL entries to world database to hold Steve
--- DizerCore V2.0 19/7/26
+-- DizerCore V3.0 22/7/26
 
 USE `world`;
 
@@ -21,8 +21,8 @@ INSERT INTO `creature_template` (
     `WidgetSetUnitConditionID`, `RegenHealth`, `CreatureImmunitiesId`, 
     `flags_extra`, `ScriptName`, `StringId`, `VerifiedBuild`
 ) VALUES 
-(20000003, 0, 0, 'Steve', NULL, 'Floo Master', NULL, 'buy', 0, 0, 35, 0, 1, 1.14286, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 7, 0, '', 0, 1, 0, 0, 0, 0, 1, 0, 0, '', NULL, 68453),
-(20000004, 0, 0, 'Steve', NULL, 'Floo Master', NULL, 'buy', 0, 0, 35, 0, 1, 1.14286, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 7, 0, '', 0, 1, 0, 0, 0, 0, 1, 0, 0, '', NULL, 68453);
+(20000003, 0, 0, 'Steve', NULL, 'DizerCore Portal Master', NULL, 'buy', 0, 0, 35, 0, 1, 1.14286, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 7, 0, '', 0, 1, 0, 0, 0, 0, 1, 0, 0, '', NULL, 68453),
+(20000004, 0, 0, 'Steve', NULL, 'DizerCore Portal Master', NULL, 'buy', 0, 0, 35, 0, 1, 1.14286, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 7, 0, '', 0, 1, 0, 0, 0, 0, 1, 0, 0, '', NULL, 68453);
 
 -- 3. CREATE STEVE MODELS (Human 5549 for Alliance, Orc 1313 for Horde)
 INSERT INTO `creature_template_model` (
