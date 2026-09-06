@@ -68,6 +68,8 @@ void AddSC_custom_redridge_mountains_player();
 void AddSC_custom_redridge_mountains_objects();
 void AddSC_custom_redridge_mountains_quests();
 
+void AddSC_custom_dazaralor_objects();
+
 // ==================== Followship Scripts ==================== //
 void AddSC_followship_bots();                // FSB main Script
 void AddSC_followship_bots_player();                // FSB Player Scripts
@@ -173,6 +175,12 @@ void AddCustomScripts()
     AddSC_custom_redridge_mountains_player();
     AddSC_custom_redridge_mountains_objects();
     AddSC_custom_redridge_mountains_quests();
+<<<<<<< HEAD
+=======
+    AddSC_custom_redridge_mountains_spells();
+	
+	AddSC_custom_dazaralor_objects();
+>>>>>>> 237f2785d0 (Zandalar Quest Fix - For the Horde)
 
     AddSC_followship_bots();
     AddSC_followship_bots_player();
