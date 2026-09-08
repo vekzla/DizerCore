@@ -1,5 +1,4 @@
 -- Player Housing System - World DB (static definitions/templates - COMPLETE)
--- Requires World of Warcraft: Midnight expansion
 
 -- ============================================
 -- NEIGHBORHOOD SYSTEM (definitions)
@@ -201,14 +200,14 @@ CREATE TABLE IF NOT EXISTS `housing_endeavor_template` (
 -- ============================================
 
 -- Insert neighborhood templates
-INSERT INTO `housing_neighborhood_template` (`name`, `neighborhood_type`, `total_plots`, `cornerstone_plots`, `min_level_requirement`, `creation_cost`, `monthly_upkeep`, `max_residents`, `description`) VALUES
+INSERT IGNORE INTO `housing_neighborhood_template` (`name`, `neighborhood_type`, `total_plots`, `cornerstone_plots`, `min_level_requirement`, `creation_cost`, `monthly_upkeep`, `max_residents`, `description`) VALUES
 ('Public Neighborhood - Starter', 1, 55, 1, 1, 0, 0, 55, 'First neighborhood for new housing players'),
 ('Public Neighborhood - Main', 1, 55, 1, 10, 0, 0, 55, 'Main public housing district'),
 ('Guild Haven', 2, 30, 1, 5, 10000, 5000, 30, 'Guild-exclusive housing area'),
 ('Private Estate', 3, 15, 1, 20, 50000, 10000, 15, 'Private charter neighborhood');
 
 -- Insert house templates
-INSERT INTO `housing_house_template` (`name`, `faction`, `size`, `base_cost`, `base_xp_requirement`, `max_rooms`, `exterior_decor_slots`, `description`) VALUES
+INSERT IGNORE INTO `housing_house_template` (`name`, `faction`, `size`, `base_cost`, `base_xp_requirement`, `max_rooms`, `exterior_decor_slots`, `description`) VALUES
 ('Cozy Cottage', 0, 1, 1000, 100, 2, 10, 'Small alliance house - perfect for beginners'),
 ('Cozy Cottage', 1, 1, 1000, 100, 2, 10, 'Small horde house - perfect for beginners'),
 ('Elegant Manor', 0, 2, 5000, 500, 5, 25, 'Medium alliance house - room for expansion'),
@@ -218,16 +217,16 @@ INSERT INTO `housing_house_template` (`name`, `faction`, `size`, `base_cost`, `b
 ('Neutral Haven', 2, 2, 7500, 750, 6, 30, 'Neutral house available to all');
 
 -- Insert house upgrades
-INSERT INTO `housing_house_upgrade` (`name`, `house_template_id`, `level`, `xp_required`, `cost_to_upgrade`, `max_rooms`, `exterior_slots`, `description`) VALUES
-(1, 'Level 2 Expansion', 1, 2, 100, 500, 2, 15, 'Expand to 2 rooms'),
-(1, 'Level 3 Enhancement', 1, 3, 500, 1500, 3, 20, 'Add third room'),
-(2, 'Level 2 Expansion', 2, 2, 250, 1000, 5, 30, 'Expand to 5 rooms'),
-(2, 'Level 3 Enhancement', 2, 3, 1500, 2000, 7, 40, 'Unlock 7 rooms'),
-(3, 'Level 2 Expansion', 3, 2, 1000, 5000, 10, 60, 'Large expansion'),
-(3, 'Level 3 Enhancement', 3, 3, 5000, 10000, 15, 80, 'Massive upgrade');
+INSERT IGNORE INTO `housing_house_upgrade` (`name`, `house_template_id`, `level`, `xp_required`, `cost_to_upgrade`, `max_rooms`, `exterior_slots`, `description`) VALUES  
+('Level 2 Expansion',   1, 2, 100,  500,   2, 15, 'Expand to 2 rooms'),  
+('Level 3 Enhancement', 1, 3, 500,  1500,  3, 20, 'Add third room'),  
+('Level 2 Expansion',   2, 2, 250,  1000,  5, 30, 'Expand to 5 rooms'),  
+('Level 3 Enhancement', 2, 3, 1500, 2000,  7, 40, 'Unlock 7 rooms'),  
+('Level 2 Expansion',   3, 2, 1000, 5000, 10, 60, 'Large expansion'),  
+('Level 3 Enhancement', 3, 3, 5000, 10000, 15, 80, 'Massive upgrade');
 
 -- Insert room templates
-INSERT INTO `housing_room_template` (`name`, `room_type`, `width`, `length`, `height`, `max_decor_slots`, `placement_model_id`, `requires_house_level`, `description`) VALUES
+INSERT IGNORE INTO `housing_room_template` (`name`, `room_type`, `width`, `length`, `height`, `max_decor_slots`, `placement_model_id`, `requires_house_level`, `description`) VALUES
 ('Master Bedroom', 1, 8.0, 10.0, 3.5, 15, 1001, 1, 'Large bedroom for the house owner'),
 ('Cozy Bedroom', 1, 6.0, 7.0, 3.0, 10, 1002, 1, 'Smaller bedroom'),
 ('Gourmet Kitchen', 2, 7.0, 9.0, 3.5, 12, 1003, 1, 'Full-featured kitchen'),
@@ -237,7 +236,7 @@ INSERT INTO `housing_room_template` (`name`, `room_type`, `width`, `length`, `he
 ('Crafting Workshop', 6, 8.0, 10.0, 4.0, 25, 1007, 3, 'Full crafting station area');
 
 -- Insert sample decor items
-INSERT INTO `housing_decor_definition` (`name`, `description`, `item_id`, `decor_type`, `placement_type`, `model_id`, `icon_id`, `is_dyeable`, `dye_slot_count`, `xp_reward`, `rarity`, `required_house_level`) VALUES
+INSERT IGNORE INTO `housing_decor_definition` (`name`, `description`, `item_id`, `decor_type`, `placement_type`, `model_id`, `icon_id`, `is_dyeable`, `dye_slot_count`, `xp_reward`, `rarity`, `required_house_level`) VALUES
 ('Wooden Chair', 'Simple wooden chair', 200001, 0, 2, 2001, 3001, 0, 0, 10, 1, 1),
 ('Oak Table', 'Sturdy oak dining table', 200002, 0, 2, 2002, 3002, 0, 0, 15, 1, 1),
 ('Fireplace', 'Warm stone fireplace', 200003, 1, 0, 2003, 3003, 0, 0, 25, 2, 1),
@@ -248,7 +247,7 @@ INSERT INTO `housing_decor_definition` (`name`, `description`, `item_id`, `decor
 ('Gemstone Chandelier', 'Rare magical chandelier', 200008, 1, 0, 2008, 3008, 1, 3, 100, 4, 2);
 
 -- Insert sample fixtures
-INSERT INTO `housing_fixture_definition` (`name`, `fixture_type`, `model_id`, `icon_id`, `required_house_level`, `customizable`, `description`) VALUES
+INSERT IGNORE INTO `housing_fixture_definition` (`name`, `fixture_type`, `model_id`, `icon_id`, `required_house_level`, `customizable`, `description`) VALUES
 ('Front Door', 1, 3001, 4001, 1, 1, 'Main entry to house'),
 ('Bedroom Window', 2, 3002, 4002, 1, 1, 'Window for natural light'),
 ('Sloped Roof', 3, 3003, 4003, 1, 0, 'Standard house roof'),
@@ -256,7 +255,7 @@ INSERT INTO `housing_fixture_definition` (`name`, `fixture_type`, `model_id`, `i
 ('Ornate Door', 1, 3005, 4005, 2, 1, 'Upgraded decorative door');
 
 -- Insert sample endeavors
-INSERT INTO `housing_endeavor_template` (`name`, `description`, `endeavor_type`, `objective_type`, `objective_id`, `objective_count`, `xp_reward`, `gold_reward`, `item_reward_id`, `difficulty_level`) VALUES
+INSERT IGNORE INTO `housing_endeavor_template` (`name`, `description`, `endeavor_type`, `objective_type`, `objective_id`, `objective_count`, `xp_reward`, `gold_reward`, `item_reward_id`, `difficulty_level`) VALUES
 ('Plant a Garden', 'Place 5 plants in your house', 0, 3, 200007, 5, 500, 100, NULL, 1),
 ('Book Collector', 'Place 3 bookshelves', 0, 3, 200006, 3, 400, 50, NULL, 1),
 ('Light It Up', 'Place 5 lighting fixtures', 1, 3, 200004, 5, 1000, 500, NULL, 2),
