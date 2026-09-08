@@ -907,6 +907,10 @@ void CharacterDatabaseConnection::DoPrepareStatements()
     PrepareStatement(CHAR_UPD_CLUB_FINDER_APPLICANT_STATUS, "UPDATE club_finder_applicant SET status = ? WHERE id = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_CLUB_FINDER_APPLICANT, "DELETE FROM club_finder_applicant WHERE id = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_CLUB_FINDER_APPLICANTS_BY_POSTING, "DELETE FROM club_finder_applicant WHERE postingID = ?", CONNECTION_ASYNC);
+
+	// Housing  
+	PrepareStatement(CHAR_INS_HOUSING_HOUSE, "INSERT INTO housing_house (owner_account_id, owner_character_guid, template_id, neighborhood_id, plot_id, house_level, purchase_time) VALUES (?, ?, ?, ?, ?, 1, UNIX_TIMESTAMP())", CONNECTION_ASYNC);
+
 }
 
 CharacterDatabaseConnection::CharacterDatabaseConnection(MySQLConnectionInfo& connInfo, ConnectionFlags connectionFlags) : MySQLConnection(connInfo, connectionFlags)

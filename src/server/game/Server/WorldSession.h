@@ -24,6 +24,7 @@
 #include "ClientBuildInfo.h"
 #include "DatabaseEnvFwd.h"
 #include "Duration.h"
+#include "HousingPackets.h"
 #include "IteratorPair.h"
 #include "LockedQueue.h"
 #include "ObjectGuid.h"
@@ -444,10 +445,10 @@ namespace WorldPackets
         class HotfixRequest;
     }
 
-    namespace Housing
-    {
-        class DeclineNeighborhoodInvites;
-    }
+    // namespace Housing
+    // {
+        // class DeclineNeighborhoodInvites;
+    // }
 
     namespace Inspect
     {
@@ -1540,7 +1541,89 @@ class TC_GAME_API WorldSession
         void HandleClubFinderRespondToApplicant(WorldPackets::ClubFinder::RespondToApplicant& packet);
         void HandleClubFinderWhisperApplicantRequest(WorldPackets::ClubFinder::WhisperApplicantRequest& packet);
 
+        // Housing Handlers
         void HandleDeclineNeighborhoodInvites(WorldPackets::Housing::DeclineNeighborhoodInvites const& declineNeighborhoodInvites);
+        void HandleNeighborhoodBuyHouse(WorldPackets::Housing::NeighborhoodBuyHouse const& packet);
+        void HandleNeighborhoodMoveHouse(WorldPackets::Housing::NeighborhoodMoveHouse const& packet);
+        void HandleNeighborhoodInviteResident(WorldPackets::Housing::NeighborhoodInviteResident const& packet);
+        void HandleNeighborhoodCancelInvitation(WorldPackets::Housing::NeighborhoodCancelInvitation const& packet);
+        void HandleNeighborhoodPlayerDeclineInvite(WorldPackets::Housing::NeighborhoodPlayerDeclineInvite const& packet);
+        void HandleNeighborhoodPlayerGetInvite(WorldPackets::Housing::NeighborhoodPlayerGetInvite const& packet);
+        void HandleNeighborhoodGetInvites(WorldPackets::Housing::NeighborhoodGetInvites const& packet);
+        void HandleNeighborhoodGetRoster(WorldPackets::Housing::NeighborhoodGetRoster const& packet);
+        void HandleNeighborhoodUpdateName(WorldPackets::Housing::NeighborhoodUpdateName const& packet);
+        void HandleNeighborhoodSetPublicFlag(WorldPackets::Housing::NeighborhoodSetPublicFlag const& packet);
+        void HandleNeighborhoodEvictPlot(WorldPackets::Housing::NeighborhoodEvictPlot const& packet);
+        void HandleNeighborhoodOfferOwnership(WorldPackets::Housing::NeighborhoodOfferOwnership const& packet);
+        void HandleNeighborhoodAddSecondaryOwner(WorldPackets::Housing::NeighborhoodAddSecondaryOwner const& packet);
+        void HandleNeighborhoodRemoveSecondaryOwner(WorldPackets::Housing::NeighborhoodRemoveSecondaryOwner const& packet);
+        void HandleNeighborhoodOpenCornerstoneUI(WorldPackets::Housing::NeighborhoodOpenCornerstoneUI const& packet);
+        void HandleNeighborhoodCharterOpenConfirmationUI(WorldPackets::Housing::NeighborhoodCharterOpenConfirmationUI const& packet);
+        void HandleNeighborhoodCharterCreate(WorldPackets::Housing::NeighborhoodCharterCreate const& packet);
+        void HandleNeighborhoodCharterEdit(WorldPackets::Housing::NeighborhoodCharterEdit const& packet);
+        void HandleNeighborhoodCharterFinalize(WorldPackets::Housing::NeighborhoodCharterFinalize const& packet);
+        void HandleNeighborhoodCharterSendSignatureRequest(WorldPackets::Housing::NeighborhoodCharterSendSignatureRequest const& packet);
+        void HandleNeighborhoodCharterAddSignature(WorldPackets::Housing::NeighborhoodCharterAddSignature const& packet);
+        void HandleHousingSvcsGetPlayerHousesInfo(WorldPackets::Housing::HousingSvcsGetPlayerHousesInfo const& packet);
+        void HandleHousingSvcsTeleportToPlot(WorldPackets::Housing::HousingSvcsTeleportToPlot const& packet);
+        void HandleHousingSvcsRelinquishHouse(WorldPackets::Housing::HousingSvcsRelinquishHouse const& packet);
+        void HandleHousingSvcsUpdateHouseSettings(WorldPackets::Housing::HousingSvcsUpdateHouseSettings const& packet);
+        void HandleHousingSvcsGetHouseFinderInfo(WorldPackets::Housing::HousingSvcsGetHouseFinderInfo const& packet);
+        void HandleHousingSvcsGetHouseFinderNeighborhood(WorldPackets::Housing::HousingSvcsGetHouseFinderNeighborhood const& packet);
+        void HandleHousingSvcsHouseFinderIgnoreNeighborhood(WorldPackets::Housing::HousingSvcsHouseFinderIgnoreNeighborhood const& packet);
+        void HandleHousingSvcsGetPotentialHouseOwners(WorldPackets::Housing::HousingSvcsGetPotentialHouseOwners const& packet);
+        void HandleHousingSvcsNeighborhoodReservePlot(WorldPackets::Housing::HousingSvcsNeighborhoodReservePlot const& packet);
+        void HandleHousingSvcsGuildCreateNeighborhood(WorldPackets::Housing::HousingSvcsGuildCreateNeighborhood const& packet);
+        void HandleHousingSvcsAcceptNeighborhoodOwnership(WorldPackets::Housing::HousingSvcsAcceptNeighborhoodOwnership const& packet);
+        void HandleHousingSvcsRejectNeighborhoodOwnership(WorldPackets::Housing::HousingSvcsRejectNeighborhoodOwnership const& packet);
+        void HandleHousingSvcsDeleteAllNeighborhoodInvites(WorldPackets::Housing::HousingSvcsDeleteAllNeighborhoodInvites const& packet);
+        void HandleHousingSvcsGetBnetFriendNeighborhoods(WorldPackets::Housing::HousingSvcsGetBnetFriendNeighborhoods const& packet);
+        void HandleHousingSvcsPlayerViewHousesByPlayer(WorldPackets::Housing::HousingSvcsPlayerViewHousesByPlayer const& packet);
+        void HandleHousingSvcsPlayerViewHousesByBnetAccount(WorldPackets::Housing::HousingSvcsPlayerViewHousesByBnetAccount const& packet);
+        void HandleHousingSvcsStartTutorial(WorldPackets::Housing::HousingSvcsStartTutorial const& packet);
+        void HandleHousingDecorSetEditMode(WorldPackets::Housing::HousingDecorSetEditMode const& packet);
+        void HandleHousingDecorPlace(WorldPackets::Housing::HousingDecorPlace const& packet);
+        void HandleHousingDecorMove(WorldPackets::Housing::HousingDecorMove const& packet);
+        void HandleHousingDecorRemove(WorldPackets::Housing::HousingDecorRemove const& packet);
+        void HandleHousingDecorLock(WorldPackets::Housing::HousingDecorLock const& packet);
+        void HandleHousingDecorSetPet(WorldPackets::Housing::HousingDecorSetPet const& packet);
+        void HandleHousingDecorSetDyeSlots(WorldPackets::Housing::HousingDecorSetDyeSlots const& packet);
+        void HandleHousingDecorRequestStorage(WorldPackets::Housing::HousingDecorRequestStorage const& packet);
+        void HandleHousingDecorDeleteFromStorage(WorldPackets::Housing::HousingDecorDeleteFromStorage const& packet);
+        void HandleHousingDecorRedeemDeferredDecor(WorldPackets::Housing::HousingDecorRedeemDeferredDecor const& packet);
+        void HandleHousingRoomSetLayoutEditMode(WorldPackets::Housing::HousingRoomSetLayoutEditMode const& packet);
+        void HandleHousingRoomAdd(WorldPackets::Housing::HousingRoomAdd const& packet);
+        void HandleHousingRoomRemove(WorldPackets::Housing::HousingRoomRemove const& packet);
+        void HandleHousingRoomMove(WorldPackets::Housing::HousingRoomMove const& packet);
+        void HandleHousingRoomRotate(WorldPackets::Housing::HousingRoomRotate const& packet);
+        void HandleHousingRoomSetComponentTheme(WorldPackets::Housing::HousingRoomSetComponentTheme const& packet);
+        void HandleHousingRoomApplyComponentMaterials(WorldPackets::Housing::HousingRoomApplyComponentMaterials const& packet);
+        void HandleHousingRoomSetCeilingType(WorldPackets::Housing::HousingRoomSetCeilingType const& packet);
+        void HandleHousingRoomSetDoorType(WorldPackets::Housing::HousingRoomSetDoorType const& packet);
+        void HandleHousingFixtureSetEditMode(WorldPackets::Housing::HousingFixtureSetEditMode const& packet);
+        void HandleHousingFixtureSetCoreFixture(WorldPackets::Housing::HousingFixtureSetCoreFixture const& packet);
+        void HandleHousingFixtureSetHouseType(WorldPackets::Housing::HousingFixtureSetHouseType const& packet);
+        void HandleHousingFixtureSetHouseSize(WorldPackets::Housing::HousingFixtureSetHouseSize const& packet);
+        void HandleHousingFixtureCreateFixture(WorldPackets::Housing::HousingFixtureCreateFixture const& packet);
+        void HandleHousingFixtureDeleteFixture(WorldPackets::Housing::HousingFixtureDeleteFixture const& packet);
+        void HandleHousingBlueprintRequestCollection(WorldPackets::Housing::HousingBlueprintRequestCollection const& packet);
+        void HandleHousingBlueprintRequestContents(WorldPackets::Housing::HousingBlueprintRequestContents const& packet);
+        void HandleHousingBlueprintExport(WorldPackets::Housing::HousingBlueprintExport const& packet);
+        void HandleHousingBlueprintImport(WorldPackets::Housing::HousingBlueprintImport const& packet);
+        void HandleHousingBlueprintRename(WorldPackets::Housing::HousingBlueprintRename const& packet);
+        void HandleHousingBlueprintDelete(WorldPackets::Housing::HousingBlueprintDelete const& packet);
+        void HandleHousingGetCurrentHouseInfo(WorldPackets::Housing::HousingGetCurrentHouseInfo const& packet);
+        void HandleHousingGetPlayerPermissions(WorldPackets::Housing::HousingGetPlayerPermissions const& packet);
+        void HandleHousingHouseStatus(WorldPackets::Housing::HousingHouseStatus const& packet);
+        void HandleHousingResetHouse(WorldPackets::Housing::HousingResetHouse const& packet);
+        void HandleHousingResetKioskMode(WorldPackets::Housing::HousingResetKioskMode const& packet);
+        void HandleHouseExteriorSetHousePosition(WorldPackets::Housing::HouseExteriorSetHousePosition const& packet);
+        void HandleHouseInteriorLeaveHouse(WorldPackets::Housing::HouseInteriorLeaveHouse const& packet);
+        void HandleInitiativeUpdateActiveNeighborhood(WorldPackets::Housing::InitiativeUpdateActiveNeighborhood const& packet);
+        void HandleHousingPhotoSharingCompleteAuthorization(WorldPackets::Housing::HousingPhotoSharingCompleteAuthorization const& packet);
+        void HandleHousingPhotoSharingClearAuthorization(WorldPackets::Housing::HousingPhotoSharingClearAuthorization const& packet);
+        void HandleInvitePlayerToNeighborhood(WorldPackets::Housing::InvitePlayerToNeighborhood const& packet);
+        void HandleQueryNeighborhoodInfo(WorldPackets::Housing::QueryNeighborhoodInfo const& packet);
 
         void HandleEnableTaxiNodeOpcode(WorldPackets::Taxi::EnableTaxiNode& enableTaxiNode);
         void HandleTaxiNodeStatusQueryOpcode(WorldPackets::Taxi::TaxiNodeStatusQuery& taxiNodeStatusQuery);
